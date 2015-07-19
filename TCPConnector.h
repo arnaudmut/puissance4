@@ -31,8 +31,9 @@ See the License for the specific language governing permissions and
 #include <netinet/in.h>
 #include "TCPStream.h"
 
-class TCPConnector {
+class TCPConnector :Net{
 public:
+    TCPStream *connect();
     TCPStream *connect(const char *server, uint16_t port);
 
     TCPStream *connect(const char *server, uint16_t port, int timeout);

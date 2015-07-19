@@ -28,16 +28,18 @@ See the License for the specific language governing permissions and
 #include <sys/socket.h>
 #include <unistd.h>
 #include <string>
+#include "Net.h"
 
 #ifndef PUISSANCE4_TCPSTREAM_H
 #define PUISSANCE4_TCPSTREAM_H
 
-class TCPStream {
-    int m_sd;
-    std::string m_peerIP;
+class TCPStream : Net {
+//    int m_sd;
+   std::string m_peerIP;
     int m_peerPort;
 
 public:
+
     friend class TCPAcceptor;
 
     friend class TCPConnector;
@@ -61,7 +63,7 @@ public:
 private:
     bool waitForReadEvent(int timeout);
 
-    TCPStream(int sd, struct sockaddr_in *address);
+    TCPStream( int sd, struct sockaddr_in *address);
 
     TCPStream();
 

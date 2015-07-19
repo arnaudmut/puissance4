@@ -34,6 +34,23 @@
 #include <errno.h>
 #include "TCPConnector.h"
 
+
+TCPStream *TCPConnector::connect() {
+    struct sockaddr_in address;
+
+    memset(&address, 0, sizeof(address));
+    address.sin_family = AF_INET;
+    address.sin_port = htons(Net::m_port);
+    if (resolveHostName(Net::m_address.c_str(), &(address.sin_addr)) != 0) {
+        inet_pton(PF_INET, Net::m_address.c_str(), &(address.sin_addr));
+    }
+    int sd = socket(AF_INET, SOCK_STREAM, 0);
+    if (::connect(sd, (struct sockaddr *) &address, sizeof(address)) != 0) {
+        perror("connect() failed");
+        return NULL;
+    }
+    return new TCPStream(sd,&address);
+}
 TCPStream *TCPConnector::connect(const char *server, uint16_t port) {
     struct sockaddr_in address;
 
@@ -48,7 +65,7 @@ TCPStream *TCPConnector::connect(const char *server, uint16_t port) {
         perror("connect() failed");
         return NULL;
     }
-    return new TCPStream(sd, &address);
+    return new TCPStream(sd,&address);
 }
 
 TCPStream *TCPConnector::connect(const char *server, uint16_t port, int timeout) {
@@ -115,3 +132,5 @@ int TCPConnector::resolveHostName(const char *hostname, struct in_addr *addr) {
     }
     return result;
 }
+
+
