@@ -82,7 +82,6 @@ TCPStream *TCPAcceptor::accept() {
     if (!m_listening) {
         return NULL;
     }
-
     struct sockaddr_in address;
     socklen_t len = sizeof(address);
     memset(&address, 0, sizeof(address));

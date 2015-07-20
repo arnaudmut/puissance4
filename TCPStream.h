@@ -51,7 +51,6 @@ public:
     std::string getPeerIP();
 
     int getPeerPort();
-
     enum {
         connectionClosed = 0,
         connectionReset = -1,

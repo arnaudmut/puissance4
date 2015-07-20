@@ -39,7 +39,6 @@ class TCPAcceptor {
     uint16_t m_port;
     string m_address;
     bool m_listening;
-
 public:
     TCPAcceptor(uint16_t port, const char *address = "");
 

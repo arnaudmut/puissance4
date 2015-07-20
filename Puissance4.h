@@ -8,7 +8,6 @@
 #ifndef PUISSANCE4_H_
 #define PUISSANCE4_H_
 
-
 /**
 * @class Puissance4
 * @author arnaud
