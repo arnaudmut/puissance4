@@ -420,7 +420,6 @@ int main(int argc, char **argv) {
 //    else {
 //        acceptor = new TCPAcceptor(atoi(argv[1]));
 //    }
-
     if (acceptor->start() == 0) {
         while (1) {
             stream = acceptor->accept();
