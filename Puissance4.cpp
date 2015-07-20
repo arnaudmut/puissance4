@@ -6,23 +6,20 @@
 #include <iomanip>
 
 
-Puissance4::Puissance4(tab g) : m_grille(g) { }
 
-Puissance4::Puissance4() : m_grille(LIGNE, std::vector<char>(COLONNE, m_vide)) { }
-
-Puissance4::~Puissance4() { }
-
-const tab &Puissance4::get_grille() const {
+Puissance4::Puissance4(tab g) : m_grille(g) {}
+Puissance4::Puissance4() : m_grille(LIGNE,std::vector<char>(COLONNE,m_vide)) {}
+Puissance4::~Puissance4() {}
+const tab & Puissance4::get_grille() const {
     return m_grille;
 }
-
 size_t Puissance4::get_grille_size() const {
     return grille_size();
 }
 
-size_t Puissance4::grille_size() const {
-    size_t taille = 0;
-    for (auto const &i : m_grille) {
+size_t Puissance4::grille_size()const {
+    size_t taille = 0 ;
+    for (auto const& i : m_grille) {
         taille += i.size();
     }
     return taille;
@@ -44,7 +41,7 @@ void Puissance4::afficher_grille() {
 }
 
 int Puissance4::get_yPos(int xPos) {
-    int yPos = 0; //ligne
+    int yPos = 0  ; //ligne
     bool colPleine = (m_grille[yPos][xPos] == m_vide);
     if (colPleine) {
         //on cherche la case m_vide a y postion pour placer le pion
@@ -65,7 +62,7 @@ int Puissance4::get_yPos(int xPos) {
 bool Puissance4::placer_pion(int xPos, char pion) {
     int yPos = this->get_yPos(xPos);
     if (yPos != -1) {
-        this->m_grille[yPos - 1][xPos] = pion;
+        this->m_grille[yPos-1][xPos] = pion;
         return true;
     } else {
         return false;
@@ -148,7 +145,7 @@ bool Puissance4::winner(int xPos) {
     status = this->check(xPos, 1, -1);
     if (status) {
         return status;
-    } else {
+    }else {
         return false;
     }
 }

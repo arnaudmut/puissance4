@@ -29,12 +29,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <iostream>
 #include "TCPAcceptor.h"
 
 TCPAcceptor::TCPAcceptor(uint16_t port, const char *address)
-        : m_lsd(0), m_port(port), m_address(address), m_listening(false) { }
+        : Net() {port,address, m_lsd =0, m_listening= false;}
 
-TCPAcceptor::TCPAcceptor() : m_lsd(0), m_port(3500), m_address("localhost"), m_listening(false) { }
+TCPAcceptor::TCPAcceptor() : Net(),m_lsd(0), m_listening(false){}
 
 TCPAcceptor::~TCPAcceptor() {
     if (m_lsd > 0) {
@@ -49,14 +50,15 @@ int TCPAcceptor::start() {
 
     m_lsd = socket(PF_INET, SOCK_STREAM, 0);
     struct sockaddr_in address;
-
     memset(&address, 0, sizeof(address));
     address.sin_family = PF_INET;
     address.sin_port = htons(m_port);
     if (m_address.size() > 0) {
+        std::cout << "madress : " + m_address <<std::endl;
         inet_pton(PF_INET, m_address.c_str(), &(address.sin_addr));
     }
     else {
+        std::cout << "madress"<<std::endl;
         address.sin_addr.s_addr = INADDR_ANY;
     }
 
@@ -75,6 +77,9 @@ int TCPAcceptor::start() {
         return result;
     }
     m_listening = true;
+    std::cout << "adresse : " << inet_ntoa(address.sin_addr);
+    std::cout << " port :" << ntohs(address.sin_port) << std::endl;
+    std::cout<< m_listening<<std::endl;
     return result;
 }
 
@@ -82,6 +87,7 @@ TCPStream *TCPAcceptor::accept() {
     if (!m_listening) {
         return NULL;
     }
+
     struct sockaddr_in address;
     socklen_t len = sizeof(address);
     memset(&address, 0, sizeof(address));

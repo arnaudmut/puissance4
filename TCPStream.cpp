@@ -27,19 +27,19 @@ Created by kardudu on 10/07/15.
 #include "TCPStream.h"
 
 
-TCPStream::TCPStream(int sd, struct sockaddr_in *address) : m_sd(sd) {
+TCPStream::TCPStream(int sd, sockaddr_in *address) : Net(sd,address) {
     char ip[50];
-    inet_ntop(PF_INET, (struct in_addr *) &(address->sin_addr.s_addr), ip, sizeof(ip) - 1);
+    inet_ntop(PF_INET, (struct in_addr*)&(address->sin_addr.s_addr), ip, sizeof(ip)-1);
     m_peerIP = ip;
     m_peerPort = ntohs(address->sin_port);
 }
 
 TCPStream::~TCPStream() {
-    close(m_sd);
+    close(Net::m_sd);
 }
 
 ssize_t TCPStream::send(const char *buffer, size_t len) {
-    return write(m_sd, buffer, len);
+    return write(Net::m_sd, buffer, len);
 }
 
 ssize_t TCPStream::receive(char *buffer, size_t len, int timeout) {
@@ -48,6 +48,7 @@ ssize_t TCPStream::receive(char *buffer, size_t len, int timeout) {
     return waitForReadEvent(timeout) ? read(m_sd, buffer, len) : connectionTimedOut;
 
 }
+
 std::string TCPStream::getPeerIP() {
     return m_peerIP;
 }
@@ -66,4 +67,3 @@ bool TCPStream::waitForReadEvent(int timeout) {
     FD_SET(m_sd, &sdset);
     return select(m_sd + 1, &sdset, NULL, NULL, &tv) > 0;
 }
-

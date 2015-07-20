@@ -34,11 +34,12 @@
 
 using namespace std;
 
-class TCPAcceptor {
-    int m_lsd;
-    uint16_t m_port;
-    string m_address;
+class TCPAcceptor : Net{
+   int m_lsd;
+//    uint16_t m_port;
+//    string m_address;
     bool m_listening;
+
 public:
     TCPAcceptor(uint16_t port, const char *address = "");
 

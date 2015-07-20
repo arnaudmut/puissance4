@@ -8,6 +8,7 @@
 #ifndef PUISSANCE4_H_
 #define PUISSANCE4_H_
 
+
 /**
 * @class Puissance4
 * @author arnaud
@@ -20,7 +21,6 @@
 #include <iostream>
 
 using tab = std::vector<std::vector<char> >;
-
 class Puissance4 {
 
 public:
@@ -31,9 +31,9 @@ public:
 
     ~Puissance4();
 
-    const tab &get_grille() const;
+    const tab& get_grille() const ;
 
-    size_t get_grille_size() const;
+    size_t get_grille_size() const ;
 
     void afficher_grille();
 
@@ -43,18 +43,12 @@ public:
     char get_pion(int i);
 
     bool winner(int xPos);
-
 private:
     bool check(int xPos, int yDir, int xDir);
-
     int get_yPos(int xPos);
-
     bool isOnBoard(int y, int x);
-
     tab m_grille;
-
-    size_t grille_size() const;
-
+    size_t grille_size()const;
     const int LIGNE = 6;
     const int COLONNE = 7;
     const char m_rond = 'O';
