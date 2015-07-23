@@ -22,10 +22,9 @@ Created by kardudu on 10/07/15.
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-#include <arpa/inet.h>
 #include "TCPStream.h"
-
+#ifdef __unix__
+#include <arpa/inet.h>
 
 TCPStream::TCPStream(int sd, sockaddr_in *address) : Net(sd,address) {
     char ip[50];
@@ -67,3 +66,50 @@ bool TCPStream::waitForReadEvent(int timeout) {
     FD_SET(m_sd, &sdset);
     return select(m_sd + 1, &sdset, NULL, NULL, &tv) > 0;
 }
+#endif
+#if _WIN32
+#include <WinSock2.h>
+#include <WS2tcpip.h>
+
+TCPStream::TCPStream(int sd, sockaddr_in *address) : Net(sd, address) {
+	char ip[50];
+	inet_ntop(PF_INET, (struct in_addr*)&(address->sin_addr.s_addr), ip, sizeof(ip)-1);
+	m_peerIP = ip;
+	m_peerPort = ntohs(address->sin_port);
+}
+
+TCPStream::~TCPStream() {
+	closesocket(Net::m_sd);
+	WSACleanup();
+}
+
+size_t TCPStream::send(const char *buffer, size_t len) {
+	return send(buffer, len);
+}
+
+size_t TCPStream::receive(char *buffer, size_t len, int timeout) {
+	if (timeout <= 0) return recv(m_sd, buffer, len,0);
+
+	return waitForReadEvent(timeout) ? recv(m_sd, buffer, len,0) : connectionTimedOut;
+
+}
+
+std::string TCPStream::getPeerIP() {
+	return m_peerIP;
+}
+
+int TCPStream::getPeerPort() {
+	return m_peerPort;
+}
+
+bool TCPStream::waitForReadEvent(int timeout) {
+	fd_set sdset;
+	struct timeval tv;
+
+	tv.tv_sec = timeout;
+	tv.tv_usec = 0;
+	FD_ZERO(&sdset);
+	FD_SET(m_sd, &sdset);
+	return select(m_sd + 1, &sdset, nullptr, nullptr, &tv) > 0;
+}
+#endif

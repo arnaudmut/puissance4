@@ -27,11 +27,10 @@
 #ifndef PUISSANCE4_TCPACCEPTOR_H
 #define PUISSANCE4_TCPACCEPTOR_H
 
-
 #include <string>
-#include <netinet/in.h>
 #include "TCPStream.h"
-
+#ifdef __unix__
+#include <netinet/in.h>
 using namespace std;
 
 class TCPAcceptor : Net{
@@ -54,5 +53,29 @@ public:
 private:
 
 };
+#endif // __unix__
+#ifdef _WIN32
+using namespace std;
 
+class TCPAcceptor : Net{
+	int m_lsd;
+	//    uint16_t m_port;
+	//    string m_address;
+	bool m_listening;
+
+public:
+	explicit TCPAcceptor(uint16_t port, const char *address = "");
+
+	~TCPAcceptor();
+
+	int start();
+
+	TCPStream *accept();
+
+	TCPAcceptor();
+
+private:
+
+};
+#endif //_win32
 #endif //PUISSANCE4_TCPACCEPTOR_H

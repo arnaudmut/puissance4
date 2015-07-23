@@ -26,10 +26,11 @@ See the License for the specific language governing permissions and
 
 #ifndef PUISSANCE4_TCPCONNECTOR_H
 #define PUISSANCE4_TCPCONNECTOR_H
-
-
-#include <netinet/in.h>
+#include "Net.h"
 #include "TCPStream.h"
+#ifdef __unix__
+#include <netinet/in.h>
+
 
 class TCPConnector :Net{
 public:
@@ -41,5 +42,20 @@ public:
 private:
     int resolveHostName(const char *host, struct in_addr *addr);
 };
+#endif //__unix__
+#ifdef _WIN32
 
+#include "TCPStream.h"
+
+class TCPConnector :Net{
+public:
+	TCPStream *connect();
+	TCPStream *connect(const char *server, uint16_t port);
+
+	TCPStream *connect(const char *server, uint16_t port, int timeout);
+
+private:
+	int resolveHostName(const char *host, struct in_addr *addr);
+};
+#endif //_WIN32
 #endif //PUISSANCE4_TCPCONNECTOR_H

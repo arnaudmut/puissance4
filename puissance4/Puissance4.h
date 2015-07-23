@@ -1,4 +1,3 @@
-class Puissance4
 	/*
 	* puissance.h
 	*
@@ -16,9 +15,7 @@ class Puissance4
 	* @brief
 	*/
 #include <vector>
-#include <cstdlib>
-#include <iostream>
-	
+
 using tab = std::vector<std::vector<char> >;
 class Puissance4 {
 
@@ -26,7 +23,7 @@ public:
 
 	Puissance4();
 
-	Puissance4(tab g);
+	explicit Puissance4(tab g);
 
 	~Puissance4();
 

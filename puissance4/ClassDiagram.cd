@@ -1,2 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Net">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAACAAAAAAAAAAAAAAAEQAAAAAAAAAAAA=</HashCode>
+      <FileName>Net.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TCPAcceptor" Collapsed="true">
+    <Position X="3" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAQAAAAAAgAAAAAAAAAAAAAAAADAACAAAAAAA=</HashCode>
+      <FileName>TCPAcceptor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TCPConnector">
+    <Position X="3.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TCPConnector.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TCPStream">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="TCPStream::__unnamed_enum_000c_1" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TCPStream.h</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAQgACAAAAAAAAABAAAAAEAIAQEAAAAAA=</HashCode>
+      <FileName>TCPStream.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

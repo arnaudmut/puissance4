@@ -4,11 +4,12 @@
 
 #include "Puissance4.h"
 #include <iomanip>
-
+#include <iostream>
 
 
 Puissance4::Puissance4(tab g) : m_grille(g) {}
 Puissance4::Puissance4() : m_grille(LIGNE, std::vector<char>(COLONNE, m_vide)) {}
+
 Puissance4::~Puissance4() {}
 const tab & Puissance4::get_grille() const {
 	return m_grille;

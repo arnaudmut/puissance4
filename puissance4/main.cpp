@@ -1,17 +1,12 @@
 #include <iostream>
-//#include "puissance.hpp" // for eclipse
 #include "Puissance4.h"
-#include "TCPStream.h"
 #include "TCPAcceptor.h"
-
-
-
+#include <string.h>
 
 #ifdef __unix__
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <string.h>
 #include <arpa/inet.h>  //getpeername,inet_ntop functions
 
 
@@ -222,84 +217,26 @@ int main() {
 
 	return 0;
 }
-
-#elif defined(_WIN32_WINNT) || defined(__WINDOWS__)
-
-#include <WS2tcpip.h> //inet_ntop,INET_ADDRSTRLEN functions
+#endif
+#ifdef _WIN32
+#pragma comment(lib, "Ws2_32.lib")
+#include <WinSock2.h>
+#include <ctime>
 
 using namespace std;
 const int buffer_len = 16;
 
-struct Joueur {
+/*struct Joueur {
 	string nom;
 	char pion;
 } joueur[2];
 
-bool player_join(SOCKET &tcp_client_sock, char pion) {
-	vector<char> client_msg_buffer(buffer_len);
-	vector<char> server_msg_buffer(buffer_len);
-	int i = 0;
-	// vider le buffer de msg clients
-	//memset(&client_msg_buffer,0,client_msg_buffer.size());
-	int status = 0;
-	string nom;
-	status = recv(tcp_client_sock, client_msg_buffer.data(),
-		client_msg_buffer.size(), 0);
-	// checking for errors
-	if (status == -1) {
-		perror("erreur recv : ");
-		return false;
-	}
-	else if (status == 0) {
-		cout << "status 0" << endl;
-	}
-	else {
-		nom.append(client_msg_buffer.begin(), client_msg_buffer.end());
-	}
-	/* enlever les bytes non necessaire au string recu
-	* param[in] string str : message client a "nettoyer"
-	* return string s : cleaned msg
-	*/
-
-	string s;
-	for (auto i : nom) {
-		if (isalnum(i)) {
-			s += i;
-		}
-	}
-	cout << "s : " << s << endl;
-
-	// nom et affectation pion joueur
-	//memcpy(&joueur[i].nom,&client_msg_buffer,buffer_len);
-	joueur[i].pion = pion;
-	joueur[i].nom = nom;
-	cout << "joueur no " << i + 1 << joueur[i].nom << endl;
-	cout << "pion :" << pion << endl;
-	i++;
-	cout << "nom size : " << nom.size() << endl;
-
-	server_msg_buffer.clear();
-	server_msg_buffer.push_back(pion);
-	status = send(tcp_client_sock, &pion, server_msg_buffer.size(), 0);
-	//checking for errors
-	if (status == -1) {
-		perror("erreur send : ");
-		exit(1);
-	}
-	else {
-		cout << server_msg_buffer.data() << endl;
-		return true;
-	}
-}
-
 int main() {
 	//game vars
-	Puissance4 jeux;
-	jeux.init_jeux();
-	srand(int(time(0)));
-	vector<vector<char> > grille = jeux.GetPlateau();
+	Puissance4 jeu;
+	tab grille = jeu.get_grille();
 	int xPos;
-	jeux.afficher_plateau();
+	jeu.afficher_grille();
 	srand(int(time(0)));
 
 	//sock vars
@@ -362,7 +299,7 @@ int main() {
 				perror("erreur : ");
 
 			}
-			else if (!player_join(tcp_client_sock[i], jeux.getPion(i))) {
+			else if (!player_join(tcp_client_sock[i], jeu.getPion(i))) {
 				tcp_client_sock[i] = -1;
 				cout << "message recu incorrect ! " << endl;
 				exit(1);
@@ -379,7 +316,7 @@ int main() {
 	for (int i = 0; i < 2; i++) {
 		cout << "nom du joueur no " << i + 1 << " : " << endl;
 		getline(cin, joueur[i].nom);
-		joueur[i].pion = jeux.get_pion(i);
+		joueur[i].pion = jeu.get_pion(i);
 	}
 	for (int i = 0; i < 2; i++) {
 		cout << joueur[i].nom << " : " << joueur[i].pion << endl;
@@ -392,20 +329,18 @@ int main() {
 		cout << "mettre pion :" << endl;
 		cin >> xPos;
 
-		while (!jeux.placer_pion(xPos, joueur[j].pion)) {
+		while (!jeu.placer_pion(xPos, joueur[j].pion)) {
 			cout << "colonn pleine ou < 0 ou >6 : ";
 			cin >> xPos;
 		}
-		cout << "winner : " << jeux.winner(xPos) << endl;
-		jeux.afficher_grille();
+		cout << "winner : " << jeu.winner(xPos) << endl;
+		jeu.afficher_grille();
 		k++;
 		//gestion tour
 		j == 0 ? j++ : j--;
 	} while (k < 40); // while no winner
 	return 0;
-}
-#endif
-
+	*/
 int main(int argc, char **argv) {
 	TCPStream *stream = NULL;
 	TCPAcceptor *acceptor = NULL;
@@ -415,7 +350,7 @@ int main(int argc, char **argv) {
 		while (1) {
 			stream = acceptor->accept();
 			if (stream != NULL) {
-				ssize_t len;
+				size_t len;
 				char line[256];
 				while ((len = stream->receive(line, sizeof(line))) > 0) {
 					line[len] = 0;
@@ -427,5 +362,7 @@ int main(int argc, char **argv) {
 			}
 		}
 	}
-	exit(0);
+	system("PAUSE");
 }
+#endif
+

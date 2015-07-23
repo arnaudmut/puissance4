@@ -23,15 +23,18 @@ See the License for the specific language governing permissions and
         limitations under the License.
 */
 
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <string>
-#include "Net.h"
-
 #ifndef PUISSANCE4_TCPSTREAM_H
 #define PUISSANCE4_TCPSTREAM_H
+
+#include "Net.h"
+#include <string>
+#ifdef __unix__
+#include <sys/socket.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+
+
 
 class TCPStream : Net {
 //    int m_sd;
@@ -69,5 +72,43 @@ private:
 
     TCPStream(const TCPStream &stream);
 };
+#endif //_unix_
+#if defined _WIN32
+class TCPStream : Net {
+	//    int m_sd;
+	std::string m_peerIP;
+	int m_peerPort;
 
+public:
+
+	friend class TCPAcceptor;
+
+	friend class TCPConnector;
+
+	~TCPStream();
+
+	size_t send(const char *buffer, size_t len);
+
+	size_t receive(char *buffer, size_t len, int timeout = 0);
+
+	std::string getPeerIP();
+
+	int getPeerPort();
+
+	enum {
+		connectionClosed = 0,
+		connectionReset = -1,
+		connectionTimedOut = -2
+	};
+
+private:
+	bool waitForReadEvent(int timeout);
+
+	TCPStream(int sd, struct sockaddr_in *address);
+
+	TCPStream();
+
+	TCPStream(const TCPStream &stream);
+};
+#endif //_WIN32
 #endif //PUISSANCE4_TCPSTREAM_H
