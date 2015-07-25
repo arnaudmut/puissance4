@@ -1,0 +1,39 @@
+﻿La génération a démarré 25/07/2015 15:59:20.
+     1>Projet "C:\Users\arnaud\Google Drive\fac\cours\L2\S3\info\projet\win\puissance4\puissance4\puissance4.vcxproj" sur le nœud 2 (Rebuild cible(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt client.cpp main.cpp Net.cpp Puissance4.cpp TCPAcceptor.cpp TCPConnector.cpp TCPStream.cpp
+         TCPStream.cpp
+         TCPConnector.cpp
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(149): warning C4244: 'argument' : conversion de 'uint16_t' en 'u_short', perte possible de données
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(165): warning C4244: 'argument' : conversion de 'uint16_t' en 'u_short', perte possible de données
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(184): warning C4244: 'argument' : conversion de 'uint16_t' en 'u_short', perte possible de données
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(188): warning C4101: 'arg' : variable locale non référencée
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(190): warning C4101: 'tv' : variable locale non référencée
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(191): warning C4101: 'len' : variable locale non référencée
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(192): warning C4101: 'valopt' : variable locale non référencée
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(189): warning C4101: 'sdset' : variable locale non référencée
+         TCPAcceptor.cpp
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpacceptor.cpp(135): warning C4244: 'argument' : conversion de 'uint16_t' en 'u_short', perte possible de données
+         Puissance4.cpp
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\puissance4.cpp(93): warning C4305: 'return' : troncation de 'int' à 'bool'
+         Net.cpp
+         main.cpp
+         client.cpp
+         Génération de code en cours...
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\puissance4.cpp(104): warning C4715: 'Puissance4::check' : les chemins de contrôle ne retournent pas tous une valeur
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpconnector.cpp(230): warning C4715: 'TCPConnector::connect' : les chemins de contrôle ne retournent pas tous une valeur
+     1>c:\users\arnaud\google drive\fac\cours\l2\s3\info\projet\win\puissance4\puissance4\tcpstream.cpp(88): warning C4717: 'TCPStream::send' : récurrent sur tous les chemins d'accès de contrôle, la fonction entraînera un dépassement de capacité de la pile d'exécution
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\arnaud\Google Drive\fac\cours\L2\S3\info\projet\win\puissance4\Debug\puissance4.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\arnaud\Google Drive\fac\cours\L2\S3\info\projet\win\puissance4\Debug\puissance4.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\arnaud\Google Drive\fac\cours\L2\S3\info\projet\win\puissance4\Debug\puissance4.lib" /MACHINE:X86 Debug\client.obj
+         Debug\main.obj
+         Debug\Net.obj
+         Debug\Puissance4.obj
+         Debug\TCPAcceptor.obj
+         Debug\TCPConnector.obj
+         Debug\TCPStream.obj
+         puissance4.vcxproj -> C:\Users\arnaud\Google Drive\fac\cours\L2\S3\info\projet\win\puissance4\Debug\puissance4.exe
+     1>Génération du projet "C:\Users\arnaud\Google Drive\fac\cours\L2\S3\info\projet\win\puissance4\puissance4\puissance4.vcxproj" terminée (Rebuild cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:05.21

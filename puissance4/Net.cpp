@@ -5,7 +5,7 @@
 
 #include "Net.h"
 
-Net::Net():m_port(3500),m_address("localhot") {}
+Net::Net():m_port(35000),m_address("localhost") {}
 
 Net::Net(int sd, struct sockaddr_in* address) : m_sd(sd) {}
 

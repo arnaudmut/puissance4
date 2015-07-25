@@ -55,10 +55,11 @@ private:
 };
 #endif // __unix__
 #ifdef _WIN32
+#include <WinSock2.h>
 using namespace std;
 
 class TCPAcceptor : Net{
-	int m_lsd;
+	SOCKET m_lsd;
 	//    uint16_t m_port;
 	//    string m_address;
 	bool m_listening;

@@ -80,7 +80,7 @@ bool Puissance4::placer_pion(int xPos, char pion) {
 */
 bool Puissance4::check(int xPos, int yDir, int xDir) {
 	bool align4;
-	for (int y = 0; y < this->LIGNE; y++) {
+	for (auto y = 0; y < this->LIGNE; y++) {
 		for (int x = 0; x < this->COLONNE; x++) {
 			//on verifie que trois pion voisins
 			align4 = true;

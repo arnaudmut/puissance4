@@ -103,6 +103,7 @@ TCPStream *TCPAcceptor::accept() {
 #ifdef _WIN32
 #include <WinSock2.h>
 #include <WS2tcpip.h> //inet_pton
+WSADATA WSAData;
 
 TCPAcceptor::TCPAcceptor(uint16_t port, const char *address)
 : Net() {
@@ -124,6 +125,10 @@ int TCPAcceptor::start() {
 	}
 
 	m_lsd = socket(PF_INET, SOCK_STREAM, 0);
+	if (m_lsd == SOCKET_ERROR) {
+		perror("erreur creation socket : ");
+		exit(1);
+	}
 	struct sockaddr_in address;
 	memset(&address, 0, sizeof(address));
 	address.sin_family = PF_INET;
@@ -141,7 +146,7 @@ int TCPAcceptor::start() {
 	setsockopt(m_lsd, SOL_SOCKET, SO_REUSEADDR, (char *)&optval, sizeof optval);
 
 	int result = bind(m_lsd, (struct sockaddr *) &address, sizeof(address));
-	if (result != 0) {
+	if (result !=0) {
 		perror("bind() failed");
 		return result;
 	}
@@ -152,7 +157,8 @@ int TCPAcceptor::start() {
 		return result;
 	}
 	m_listening = true;
-	std::cout << "adresse : " << inet_ntoa(address.sin_addr);
+	char ip[INET_ADDRSTRLEN];
+	std::cout << "adresse : " << inet_ntop(AF_INET,&(address.sin_addr),ip,INET_ADDRSTRLEN);
 	std::cout << " port :" << ntohs(address.sin_port) << std::endl;
 	std::cout << m_listening << std::endl;
 	return result;
