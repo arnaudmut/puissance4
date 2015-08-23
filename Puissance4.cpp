@@ -101,11 +101,7 @@ bool Puissance4::check(int xPos, int yDir, int xDir) {
 }
 
 char Puissance4::get_pion(int i) {
-    if (i == 0) {
-        return this->m_croix;
-    } else {
-        return this->m_rond;
-    }
+    return i == 0 ? this->m_croix : this->m_rond;
 }
 
 bool Puissance4::winner(int xPos) {

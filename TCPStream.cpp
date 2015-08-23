@@ -27,7 +27,7 @@ Created by kardudu on 10/07/15.
 #include "TCPStream.h"
 
 
-TCPStream::TCPStream(int sd, sockaddr_in *address) : Net(sd,address) {
+TCPStream::TCPStream(int sd, struct sockaddr_in *address) : Net(sd,address) {
     char ip[50];
     inet_ntop(PF_INET, (struct in_addr*)&(address->sin_addr.s_addr), ip, sizeof(ip)-1);
     m_peerIP = ip;
