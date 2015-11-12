@@ -10,8 +10,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <arpa/inet.h>  //getpeername,inet_ntop functions
-#include "TCPStream.h"
-#include "TCPAcceptor.h"
 
 using namespace std;
 ssize_t buffer_len = 128;
