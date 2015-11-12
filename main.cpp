@@ -5,47 +5,39 @@
 
 
 #ifdef __unix__
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <string.h>
-#include <arpa/inet.h>  //getpeername,inet_ntop functions
+
+#include "ServerSocket.h"
 
 using namespace std;
-ssize_t buffer_len = 128;
+
 
 struct Joueur {
     string nom;
     char pion;
 } joueur[2];
 
-bool player_join_net(TCPStream *client_sd, char pion){
-    if (client_sd != NULL) {
-        char message_client[buffer_len];
-        ssize_t status;
-        while ((buffer_len = client_sd->receive(message_client, sizeof(buffer_len))) > 0) {
-            message_client[buffer_len] = 0;
-            printf("received - %s\n", message_client);
-            joueur->nom = message_client;
-            joueur->pion = pion;
-            status = client_sd->send(&pion, buffer_len);
-        }
-        delete client_sd;
-        return status != -1;
+void player_join_ent(ServerSocket s_socket,Puissance4 jeu) {
+    string nom_joueur;
+    ServerSocket c_socket[2];
+    for (int i = 0; i < 2; ++i) {
+        s_socket.accept(c_socket[i]);
+        c_socket[i] >> joueur[i].nom;
+        joueur->pion = jeu.get_pion(i);
     }
-    else exit(1);
+cout << joueur[1].pion<<endl;
+    cout << joueur[1].pion<<endl;
+
 }
-bool player_join(int &tcp_client_sock, char pion) {
+
+/*bool player_join(int &tcp_client_sock, char pion) {
     vector<char> client_msg_buffer(buffer_len);
     vector<char> server_msg_buffer(buffer_len);
     int i = 0;
-    // vider le buffer de msg clients
-    //memset(&client_msg_buffer,0,client_msg_buffer.size());
+
     ssize_t status = 0;
     string nom;
     do {
-        status = recv(tcp_client_sock, client_msg_buffer.data(),
-                      client_msg_buffer.size(), 0);
+        status = tcp_client_sock >> nom;
         // checking for errors
         if (status == -1) {
             perror("erreur recv : ");
@@ -57,10 +49,10 @@ bool player_join(int &tcp_client_sock, char pion) {
         else {
             nom.append(client_msg_buffer.begin(), client_msg_buffer.end());
         }
-        /* enlever les bytes non necessaire au string recu
+        *//* enlever les bytes non necessaire au string recu
         * param[in] string str : message client a "nettoyer"
         * return string s : cleaned msg
-        */
+        *//*
 
     } while (status == client_msg_buffer.size());
     string s;
@@ -92,22 +84,22 @@ bool player_join(int &tcp_client_sock, char pion) {
         cout << server_msg_buffer.data() << endl;
         return true;
     }
-}
+}*/
 
 int main() {
     //game vars
     Puissance4 jeu;
-    srand((unsigned int)(time(0)));
+    srand((unsigned int) (time(0)));
     vector<vector<char> > grille = jeu.get_grille();
     int xPos;
     jeu.afficher_grille();
-    srand((unsigned int)(time(0)));
-    cout << grille.size()<<endl;
-    cout<<grille[0].size()<<endl;
-    cout<< jeu.get_grille_size()<<endl;
+    srand((unsigned int) (time(0)));
+    cout << "grille size: "<< grille.size() << endl;
+    cout << "grille[0] zise :"<<grille[0].size() << endl;
+    cout << "jeu.get grille size : "<<jeu.get_grille_size() << endl;
 
 
-    //sock vars
+/*    //sock vars
     sockaddr_in tcp_server_addr;
     sockaddr_in tcp_client_addr;
     socklen_t tcp_server_addr_len = sizeof(tcp_server_addr);
@@ -164,60 +156,70 @@ int main() {
             i++;
                 cout << "player join status : " + status<<endl;
             }
+        }*/
+
+    ServerSocket s_socket(30000);
+
+    //accepter les deux joueurs
+        player_join_ent(s_socket,jeu);
+// got two players
+/*//game handleling sous progr
+    if (
+            close(tcp_server_sock)
+            == -1) {
+        perror("erreur fermeture server socket : ");
+        exit(1);
+    }
+
+    for (
+            int i = 0;
+            i < 2; i++) {
+        cout << "nom du joueur no " << i + 1 << " : " <<
+        endl;
+        getline(cin, joueur[i]
+                .nom);
+        joueur[i].
+                pion = jeu.get_pion(i);
+    }
+    for (
+            int i = 0;
+            i < 2; i++) {
+        cout << joueur[i].nom << " : " << joueur[i].pion <<
+        endl;
+    }
+    int k = 0;
+    int j = rand() % 2;
+// first to play
+    cout << joueur[j].nom << " commence le jeu " <<
+    endl;
+    do {
+        cout << "mettre pion :" <<
+        endl;
+        cin >>
+        xPos;
+
+        while (!jeu.
+                placer_pion(xPos, joueur[j]
+                .pion)) {
+            cout << "colonn pleine ou < 0 ou >6 : ";
+            cin >>
+            xPos;
         }
+        cout << "winner : " << jeu.
+                winner(xPos)
+        <<
+        endl;
+        jeu.
 
-        //accepter les deux joueurs
-        for (int i = 0; i < 2; i++) {
-            while (tcp_client_sock[i] == -1) {
-                    //if accept fails
-                    if (tcp_client_sock[i] == -1) {
-                        cout << "joueur " << i + 1 << "non accepte. ";
-                        perror("erreur : ");
+                afficher_grille();
 
-                    }
-                    else if (!player_join(tcp_client_sock[i], jeu.get_pion(i))) {
-                        tcp_client_sock[i] = -1;
-                        cout << "message recu incorrect ! " << endl;
-                        exit(1);
-                    }
-                }
-            }
-            // got two players
-            //game handleling sous progr
-            if (close(tcp_server_sock) == -1) {
-                perror("erreur fermeture server socket : ");
-                exit(1);
-            }
+        k++;
+//gestion tour
+        j == 0 ? j++ : j--;
+    } while (k < 40);// while no winner*/
 
-            for (int i = 0; i < 2; i++) {
-                cout << "nom du joueur no " << i + 1 << " : " << endl;
-                getline(cin, joueur[i].nom);
-                joueur[i].pion = jeu.get_pion(i);
-            }
-            for (int i = 0; i < 2; i++) {
-                cout << joueur[i].nom << " : " << joueur[i].pion << endl;
-            }
-            int k = 0;
-            int j = rand() % 2;
-            // first to play
-            cout << joueur[j].nom << " commence le jeu " << endl;
-            do {
-                cout << "mettre pion :" << endl;
-                cin >> xPos;
-
-                while (!jeu.placer_pion(xPos, joueur[j].pion)) {
-                    cout << "colonn pleine ou < 0 ou >6 : ";
-                    cin >> xPos;
-                }
-                cout << "winner : " << jeu.winner(xPos) << endl;
-                jeu.afficher_grille();
-                k++;
-                //gestion tour
-                j == 0 ? j++ : j--;
-            } while (k < 40);// while no winner
-
-            return 0;
-        }
+    return 0;
+}
 
 #elif defined(_WIN32_WINNT) || defined(__WINDOWS__)
 
@@ -401,27 +403,3 @@ int main() {
     return 0;
 }
 #endif
-
-int main(int argc, char **argv) {
-            TCPStream *stream = NULL;
-            TCPAcceptor *acceptor = NULL;
-            acceptor = new TCPAcceptor();
-
-            if (acceptor->start() == 0) {
-                while (1) {
-                    stream = acceptor->accept();
-                    if (stream != NULL) {
-                        ssize_t len;
-                        char line[256];
-                        while ((len = stream->receive(line, sizeof(line))) > 0) {
-                            line[len] = 0;
-                            printf("received - %s\n", line);
-                            stream->send(line, len);
-                        }
-                        stream->send(line, len);
-                        delete stream;
-                    }
-                }
-            }
-            exit(0);
-        }
