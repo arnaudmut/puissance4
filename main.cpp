@@ -21,10 +21,10 @@ void player_join_ent(ServerSocket s_socket,Puissance4 jeu) {
     ServerSocket c_socket[2];
     for (int i = 0; i < 2; ++i) {
         s_socket.accept(c_socket[i]);
-        c_socket[i] >> joueur[i].nom;
-        joueur->pion = jeu.get_pion(i);
+//        c_socket[i] >> joueur[i].nom;
+//        joueur->pion = jeu.get_pion(i);
     }
-cout << joueur[1].pion<<endl;
+    cout << joueur[1].pion<<endl;
     cout << joueur[1].pion<<endl;
 
 }
@@ -90,13 +90,21 @@ int main() {
     //game vars
     Puissance4 jeu;
     srand((unsigned int) (time(0)));
-    vector<vector<char> > grille = jeu.get_grille();
+    string grille = jeu.get_grille();
     int xPos;
+    for (auto i=0 ;i<7;i++) {
+
+        int k;
+        cin >>k;
+        jeu.test(k);
+        jeu.afficher_grille();
+    }
+
     jeu.afficher_grille();
     srand((unsigned int) (time(0)));
+
     cout << "grille size: "<< grille.size() << endl;
-    cout << "grille[0] zise :"<<grille[0].size() << endl;
-    cout << "jeu.get grille size : "<<jeu.get_grille_size() << endl;
+    cout << "jeu.get grille size : "<<jeu.grille_size() << endl;
 
 
 /*    //sock vars
@@ -161,7 +169,7 @@ int main() {
     ServerSocket s_socket(30000);
 
     //accepter les deux joueurs
-        player_join_ent(s_socket,jeu);
+    player_join_ent(s_socket,jeu);
 // got two players
 /*//game handleling sous progr
     if (

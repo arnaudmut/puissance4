@@ -20,40 +20,44 @@
 #include <cstdlib>
 #include <iostream>
 
-using tab = std::vector<std::vector<char> >;
+
 class Puissance4 {
 
 public:
 
     Puissance4();
 
-    Puissance4(tab g);
-
+Puissance4(std::string g);
     ~Puissance4();
 
-    const tab& get_grille() const ;
+    const std::string& get_grille() const ;
 
     size_t get_grille_size() const ;
 
     void afficher_grille();
 
-    bool placer_pion(int xPos, char pion);
+    int placer_pion(int xPos);
 
     //friend void test(int yPos, int xPos);
     char get_pion(int i);
 
     bool winner(int xPos);
+
+    size_t grille_size()const;
+
+    void test(int k);;
+
 private:
     bool check(int xPos, int yDir, int xDir);
     int get_yPos(int xPos);
-    bool isOnBoard(int y, int x);
-    tab m_grille;
-    size_t grille_size()const;
+    bool isOnBoard(int x);
+    std::string m_grille;
     const int LIGNE = 6;
     const int COLONNE = 7;
     const char m_rond = 'O';
     const char m_croix = 'X';
     const char m_vide = ' ';
+    void init();
 };
 
 #endif // PUISSANCE4_H_

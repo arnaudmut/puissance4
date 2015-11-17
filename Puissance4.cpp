@@ -7,29 +7,24 @@
 
 
 
-Puissance4::Puissance4(tab g) : m_grille(g) {}
-Puissance4::Puissance4() : m_grille(LIGNE,std::vector<char>(COLONNE,m_vide)) {}
+
+
+
+Puissance4::Puissance4():m_grille(42,' '){
+}
 Puissance4::~Puissance4() {}
-const tab & Puissance4::get_grille() const {
+const std::string & Puissance4::get_grille() const {
     return m_grille;
 }
-size_t Puissance4::get_grille_size() const {
-    return grille_size();
-}
-
-size_t Puissance4::grille_size()const {
-    size_t taille = 0 ;
-    for (auto const& i : m_grille) {
-        taille += i.size();
-    }
-    return taille;
+size_t Puissance4::grille_size() const {
+    return m_grille.size();
 }
 
 void Puissance4::afficher_grille() {
     std::cout << " -----------------------------" << std::endl;
     for (int i = 0; i < LIGNE; i++) {
         for (int j = 0; j < COLONNE; j++) {
-            std::cout << " | " << m_grille[i][j];
+            std::cout << " | " << m_grille.at((COLONNE*i)+j);
         }
         std::cout << " | " << std::endl;
         std::cout << " -----------------------------" << std::endl;
@@ -39,47 +34,69 @@ void Puissance4::afficher_grille() {
     }
     std::cout << std::endl;
 }
-
-int Puissance4::get_yPos(int xPos) {
-    int yPos = 0  ; //ligne
-    bool colPleine = (m_grille[yPos][xPos] == m_vide);
-    if (colPleine) {
-        //on cherche la case m_vide a y postion pour placer le pion
-        while (this->m_grille[yPos][xPos] == m_vide && yPos < this->LIGNE) {
-            //!< si la dernier case est m_vide aussi
-            if (yPos == LIGNE) {
-                yPos++;
-                continue;
-            }
-            yPos++;
-        }
-        return yPos;
-    } else {
-        return -1;
-    }
+char Puissance4::get_pion(int i) {
+    return i == 0 ? this->m_croix : this->m_rond;
 }
 
-bool Puissance4::placer_pion(int xPos, char pion) {
-    int yPos = this->get_yPos(xPos);
-    if (yPos != -1) {
-        this->m_grille[yPos-1][xPos] = pion;
-        return true;
-    } else {
-        return false;
-    }
+ int Puissance4::placer_pion(int xPos) {
+     int yPos = xPos;
+     std::cout<<((LIGNE*COLONNE)-(COLONNE-xPos))<<std::endl;
+     if(m_grille.at((LIGNE*COLONNE)-(COLONNE-xPos))==' '){
+         m_grille.at((LIGNE*COLONNE)-(COLONNE-xPos))=get_pion(1);
+         return (LIGNE*COLONNE)-(COLONNE-xPos);
+     } else {
+         bool b;
+         while (b) {
+
+             if (m_grille.at(yPos) == ' ') {
+                 yPos += COLONNE;
+             }
+             else {
+                 b = false;
+             }
+         }
+         //colonne pleine
+         if (yPos-COLONNE < 0){
+
+             return -1;
+         } else{
+
+         m_grille.at(yPos-COLONNE)=m_rond;
+         }
+         yPos -=COLONNE;
+     }
+     std::cout<< "yPos : "<<yPos<<std::endl;
+     return  yPos;
 }
 
-//void Puissance4::test(int yPos, int xPos) {
-//    m_grille[yPos][xPos] = get_pion(0);
-//}
-/**
- * @param :
- */
+void Puissance4::test(int xPos) {
+    int k = placer_pion(xPos);
+    std::cout<<"K : "<<k<<std::endl;
+    bool b = winner(k);
+}
+bool Puissance4::isOnBoard(int x) {
+    return x<42 && x >=0;
+}
+bool Puissance4::check(int yPos, int yDir, int xDir) {
+    int c = 0;
+    bool b = true;
+    while (c < 4){
+        std::cout<<" ypos check : "<<yPos<<std::endl;
+        int x = yPos + (c*(xDir+yDir));
+        bool v = isOnBoard(x);
+        if (!v){ return 0;}
+        bool b = m_grille.at(yPos) == m_grille.at(x);
+        if (!b){ return 0;}
+        c++;
+    }
+    return b;
+}
+/*
 bool Puissance4::check(int xPos, int yDir, int xDir) {
     bool align4;
     for (int y = 0; y < this->LIGNE; y++) {
         for (int x = 0; x < this->COLONNE; x++) {
-            //on verifie que trois pion voisins
+            //on verifie que trois pions voisins
             align4 = true;
             int c = 0;
             bool same;
@@ -99,10 +116,7 @@ bool Puissance4::check(int xPos, int yDir, int xDir) {
         }
     }
 }
-
-char Puissance4::get_pion(int i) {
-    return i == 0 ? this->m_croix : this->m_rond;
-}
+*/
 
 bool Puissance4::winner(int xPos) {
 
@@ -118,35 +132,33 @@ bool Puissance4::winner(int xPos) {
         return status;
     }
     // bas --> haut
-    status = this->check(xPos, -1, 0);
+    status = this->check(xPos, -7, 0);
     if (status) {
         return status;
     }
+    //haut -->bas
+    status = check(xPos,7,0);
+    if(status){ return status;};
     //top droite --> bas gauche
-    status = this->check(xPos, 1, -1);
+    status = this->check(xPos, 7, -1);
     if (status) {
         return status;
     }
     //bas gauche --> top droite
-    status = this->check(xPos, -1, 1);
+    status = this->check(xPos, -7, 1);
     if (status) {
         return status;
     }
     //top gauche --> bas droite
-    status = this->check(xPos, 1, 1);
+    status = this->check(xPos, 7, 1);
     if (status) {
         return status;
     }
     //bas droite --> haut gauche
-    status = this->check(xPos, 1, -1);
+    status = this->check(xPos, -7, -1);
     if (status) {
         return status;
     }else {
         return false;
     }
 }
-
-bool Puissance4::isOnBoard(int y, int x) {
-    return ((0 <= y && y < this->LIGNE) && (0 <= x && x < this->COLONNE));
-}
-
