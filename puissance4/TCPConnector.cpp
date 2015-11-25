@@ -30,7 +30,6 @@
 #include <string.h>
 #include <errno.h>
 #include "TCPConnector.h"
-#include <fcntl.h>
 #ifdef __unix__
 #include <netdb.h>
 #include <arpa/inet.h>
